@@ -1,6 +1,7 @@
 // @flow
 import prismic from 'prismic-javascript'
 import { keys } from 'lodash'
+import table from 'easy-table'
 
 type PrismicQueryResponse = {
   total_results_size: number
@@ -45,11 +46,13 @@ Promise.all(
     acc + count
   ), 0)
 
-  res.forEach(({ count, type }) => {
-    const percentage = Math.round(count / total * 100)
-
-    console.log(`${count} ${documentTypes[type]} (${percentage}%)`)
-  })
+  console.log(table.print(
+    res.map(({ count, type }) => ({
+      count,
+      percentage: Math.round(count / total * 100),
+      description: documentTypes[type]
+    })).sort((a, b) => (b.count - a.count))
+  ))
 
   console.log(`${total} active documents total`)
 })
