@@ -1,7 +1,7 @@
 // @flow
 import prismic from 'prismic-javascript'
-import { keys } from 'lodash'
 import table from 'easy-table'
+import { Spinner } from 'cli-spinner'
 
 type PrismicQueryResponse = {
   total_results_size: number
@@ -48,12 +48,18 @@ const fetchDocumentCount = ({ type, description }) => (
     count,
     type,
     description
-  })).catch(console.log || process.exit(1))
+  })).catch((err) => (console.log(err) || process.exit(1)))
 )
+
+const spinner = new Spinner()
+spinner.setSpinnerString(18)
+spinner.start()
 
 Promise.all(
   documentTypes.map(fetchDocumentCount)
 ).then((res: Array<DocumentCount>) => {
+  spinner.stop(true)
+
   const total = res.reduce((acc: number, { count }) => (
     acc + count
   ), 0)
@@ -61,9 +67,9 @@ Promise.all(
   console.log(table.print(
     res
     .sort((a, b) => (b.count - a.count))
-    .map(({ count, type, description }) => ({
+    .map(({ count, description }) => ({
       count,
-      percentage: Math.round(count / total * 100),
+      percentage: Math.round(count / total * 10000) / 100,
       description: description
     }))
   ))
