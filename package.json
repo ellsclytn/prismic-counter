@@ -1,5 +1,5 @@
 {
-  "name": "flowing",
+  "name": "prismic-counter",
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
@@ -21,10 +21,8 @@
     "standard": "^10.0.2"
   },
   "dependencies": {
-    "axios": "^0.16.2",
     "cli-spinner": "^0.2.6",
     "easy-table": "^1.1.0",
-    "lodash": "^4.17.4",
     "prismic-javascript": "^1.1.4"
   },
   "standard": {
